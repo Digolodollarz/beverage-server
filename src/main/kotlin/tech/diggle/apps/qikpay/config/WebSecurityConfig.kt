@@ -78,7 +78,6 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
 
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()
-
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/v2/**", "/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()

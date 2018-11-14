@@ -82,4 +82,5 @@ public class AuthenticationRestController {
         User usr = userDetailService.create(user);
         return (JwtUser) userDetailsService.loadUserByUsername(usr.getUsername());
     }
+
 }

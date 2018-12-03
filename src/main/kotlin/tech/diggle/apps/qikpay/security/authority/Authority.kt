@@ -2,7 +2,7 @@ package tech.diggle.apps.qikpay.security.authority
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import tech.diggle.apps.qikpay.security.user.User
+import tech.diggle.apps.qikpay.security.user.AppUser
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
@@ -23,5 +23,5 @@ class Authority {
 
     @JsonIgnoreProperties("authorities")
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
-    var users: List<User>? = null
+    var appUsers: List<AppUser>? = null
 }

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import tech.diggle.apps.qikpay.security.authority.Authority
-import tech.diggle.apps.qikpay.security.user.User
+import tech.diggle.apps.qikpay.security.user.AppUser
 import tech.diggle.apps.qikpay.security.user.UserRepository
 import java.util.*
 
@@ -30,8 +30,8 @@ class JwtUserDetailsServiceImpl : UserDetailsService {
         }
     }
 
-    fun createUser(usr: JwtUser): User {
-        val user: User = User().apply {
+    fun createUser(usr: JwtUser): AppUser {
+        val appUser: AppUser = AppUser().apply {
             username = usr.username
             firstname = usr.firstname
             lastname = usr.lastname
@@ -41,6 +41,6 @@ class JwtUserDetailsServiceImpl : UserDetailsService {
             enabled = usr.isEnabled
             this.lastPasswordResetDate = Date(1509494400)
         }
-        return userRepository!!.save(user)
+        return userRepository!!.save(appUser)
     }
 }

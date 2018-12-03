@@ -1,6 +1,6 @@
 package tech.diggle.apps.qikpay.security.passwordreset;
 
-import tech.diggle.apps.qikpay.security.user.User;
+import tech.diggle.apps.qikpay.security.user.AppUser;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -18,9 +18,9 @@ public class PasswordResetToken {
 
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @OneToOne(targetEntity = AppUser.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id", unique = true)
-    private User user;
+    private AppUser user;
 
     private Date expiryDate;
 
@@ -35,12 +35,12 @@ public class PasswordResetToken {
         this.expiryDate = calculateExpiryDate();
     }
 
-    public PasswordResetToken(final String token, final User user) {
+    public PasswordResetToken(final String token, final AppUser user) {
         this(token);
         this.user = user;
     }
 
-    public PasswordResetToken(final User user) {
+    public PasswordResetToken(final AppUser user) {
         this();
         this.user = user;
     }
@@ -58,11 +58,11 @@ public class PasswordResetToken {
         this.token = token;
     }
 
-    public User getUser() {
+    public AppUser getUser() {
         return user;
     }
 
-    public void setUser(final User user) {
+    public void setUser(final AppUser user) {
         this.user = user;
     }
 

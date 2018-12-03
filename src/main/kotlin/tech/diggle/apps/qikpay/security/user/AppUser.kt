@@ -11,7 +11,7 @@ import javax.validation.constraints.Size
 
 @Entity
 @Table(name = "USER")
-class User {
+class AppUser {
 
     @Id
     @Column(name = "ID")
@@ -53,7 +53,7 @@ class User {
     @NotNull
     var lastPasswordResetDate: Date? = null
 
-    @JsonIgnoreProperties("users")
+    @JsonIgnoreProperties("appUsers")
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_AUTHORITY", joinColumns = arrayOf(JoinColumn(name = "USER_ID", referencedColumnName = "ID")), inverseJoinColumns = arrayOf(JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")))
     var authorities: List<Authority>? = null

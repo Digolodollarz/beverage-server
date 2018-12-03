@@ -17,7 +17,7 @@ import tech.diggle.apps.qikpay.security.jwt.JwtAuthenticationRequest;
 import tech.diggle.apps.qikpay.security.jwt.JwtUser;
 import tech.diggle.apps.qikpay.security.jwt.JwtAuthenticationResponse;
 import tech.diggle.apps.qikpay.security.jwt.JwtTokenUtil;
-import tech.diggle.apps.qikpay.security.user.User;
+import tech.diggle.apps.qikpay.security.user.AppUser;
 import tech.diggle.apps.qikpay.security.user.UserDetailServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,8 +78,8 @@ public class AuthenticationRestController {
 
 
     @PostMapping(value = "${jwt.route.authentication.register}")
-    JwtUser register(@RequestBody User user) {
-        User usr = userDetailService.create(user);
+    JwtUser register(@RequestBody AppUser appUser) {
+        AppUser usr = userDetailService.create(appUser);
         return (JwtUser) userDetailsService.loadUserByUsername(usr.getUsername());
     }
 

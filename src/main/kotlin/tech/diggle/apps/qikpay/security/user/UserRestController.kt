@@ -39,16 +39,16 @@ class UserRestController(@Autowired val repository: UserRepository) {
         return userDetailsService!!.loadUserByUsername(userName) as JwtUser
     }
 
-    @PostMapping("user")
+    @PostMapping("appUser")
     @PreAuthorize("hasRole('ADMIN')")
-    fun addUser(@RequestBody user: User): JwtUser {
-        val usr = userDetailService!!.create(user)
+    fun addUser(@RequestBody appUser: AppUser): JwtUser {
+        val usr = userDetailService!!.create(appUser)
         return userDetailsService!!.loadUserByUsername(usr.username) as JwtUser
     }
 
-    @GetMapping("users")
+    @GetMapping("appUsers")
     @PreAuthorize("hasRole('ADMIN')")
-    fun listUsers(): List<User> {
+    fun listUsers(): List<AppUser> {
         return repository.findAll()
     }
 

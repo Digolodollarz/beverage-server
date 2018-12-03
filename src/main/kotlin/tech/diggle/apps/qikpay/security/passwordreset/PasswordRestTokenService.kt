@@ -1,11 +1,11 @@
 package tech.diggle.apps.qikpay.security.passwordreset
 
-import tech.diggle.apps.qikpay.security.user.User
+import tech.diggle.apps.qikpay.security.user.AppUser
 
 
 interface PasswordRestTokenService {
-    fun createToken(user: User): PasswordResetToken
+    fun createToken(appUser: AppUser): PasswordResetToken
     fun validateToken(token: PasswordResetToken, request: PasswordResetRequest): Boolean
     fun findByRequest(request: PasswordResetRequest): PasswordResetToken?
-    fun findByUser(user: User): PasswordResetToken?
+    fun findByUser(appUser: AppUser): PasswordResetToken?
 }

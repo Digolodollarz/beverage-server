@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import tech.diggle.apps.qikpay.security.authority.Authority;
 import tech.diggle.apps.qikpay.security.authority.AuthorityName;
-import tech.diggle.apps.qikpay.security.user.User;
+import tech.diggle.apps.qikpay.security.user.AppUser;
 
 //@Service
 public final class JwtUserFactory {
@@ -17,17 +17,17 @@ public final class JwtUserFactory {
     private JwtUserFactory() {
     }
 
-    public static JwtUser create(User user) {
+    public static JwtUser create(AppUser appUser) {
         return new JwtUser(
-                user.getId(),
-                user.getUsername(),
-                user.getFirstname(),
-                user.getLastname(),
-                user.getEmail(),
-                user.getPassword(),
-                mapToGrantedAuthorities(user.getAuthorities()),
-                user.getEnabled(),
-                user.getLastPasswordResetDate()
+                appUser.getId(),
+                appUser.getUsername(),
+                appUser.getFirstname(),
+                appUser.getLastname(),
+                appUser.getEmail(),
+                appUser.getPassword(),
+                mapToGrantedAuthorities(appUser.getAuthorities()),
+                appUser.getEnabled(),
+                appUser.getLastPasswordResetDate()
         );
     }
 
@@ -47,8 +47,8 @@ public final class JwtUserFactory {
                 .collect(Collectors.toList());
     }
 
-    public static User user(JwtUser user) {
-        User usr = new User();
+    public static AppUser user(JwtUser user) {
+        AppUser usr = new AppUser();
         usr.setUsername(user.getUsername());
         usr.setFirstname(user.getFirstname());
         usr.setLastname(user.getLastname());

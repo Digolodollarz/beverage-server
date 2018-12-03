@@ -103,6 +103,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--PayNow SDK-->
+        <dependency>
+            <groupId>zw.paynow</groupId>
+            <artifactId>java-sdk</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -123,6 +129,7 @@
                     </args>
                     <compilerPlugins>
                         <plugin>spring</plugin>
+                        <plugin>jpa</plugin>
                     </compilerPlugins>
                     <jvmTarget>1.8</jvmTarget>
                 </configuration>
@@ -146,6 +153,11 @@
                     <dependency>
                         <groupId>org.jetbrains.kotlin</groupId>
                         <artifactId>kotlin-maven-allopen</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-noarg</artifactId>
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>

@@ -1,12 +1,10 @@
 package tech.diggle.apps.qikpay.payments
 
-import com.sun.javaws.exceptions.InvalidArgumentException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import tech.diggle.apps.qikpay.security.user.UserRepository
 import webdev.payments.Paynow
-import webdev.payments.Payment
 import java.util.*
 
 @Service

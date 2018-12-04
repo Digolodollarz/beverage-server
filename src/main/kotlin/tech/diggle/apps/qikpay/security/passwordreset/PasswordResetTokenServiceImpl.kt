@@ -22,8 +22,15 @@ class PasswordResetTokenServiceImpl(@Autowired val repository: PasswordTokenRepo
     }
 
     override fun validateToken(token: PasswordResetToken, request: PasswordResetRequest): Boolean {
+        if (request.token == null ) return false
         val now = Calendar.getInstance()
-        return token.token == request.token && now.time.time - token.expiryDate.time < 0
+        val sanitisedToken = request.token.trim()
+                .replace(" ", "")
+                .replace("-", "")
+        val sanitisedDbToken = token.token.trim()
+                .replace(" ", "")
+                .replace("-", "")
+        return sanitisedToken == sanitisedDbToken && now.time.time - token.expiryDate.time < 0
     }
 
     override fun findByRequest(request: PasswordResetRequest): PasswordResetToken {

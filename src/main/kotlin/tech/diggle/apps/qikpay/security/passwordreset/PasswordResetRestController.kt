@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import tech.diggle.apps.qikpay.payments.InvalidArgumentStateException
+import tech.diggle.apps.qikpay.payments.NullArgumentException
 import tech.diggle.apps.qikpay.security.user.AppUser
 import tech.diggle.apps.qikpay.security.user.UserDetailServiceImpl
 import java.security.Principal
@@ -33,18 +35,18 @@ class PasswordResetRestController(@Autowired val userDetails: UserDetailServiceI
     }
 
     @PostMapping("update")
-    fun changePassword(@RequestBody request: PasswordResetRequest): String {
-        if (request.username == null) throw KotlinNullPointerException("Username")
-        if (request.token == null) throw KotlinNullPointerException("Token")
-        if (request.newPassword == null) throw KotlinNullPointerException("New Password")
-        if (request.newPassword.length < 6) throw IllegalArgumentException("Password too short")
+    fun changePassword(@RequestBody request: PasswordResetRequest): Map<String, Any> {
+        if (request.username == null) throw NullArgumentException("Username is empty")
+        if (request.token == null) throw NullArgumentException("Token is empty")
+        if (request.newPassword == null) throw NullArgumentException("New Password empty")
+        if (request.newPassword.length < 6) throw InvalidArgumentStateException("Password too short")
         val user = userDetails.findByUsernameOrEmail(request.username) ?: throw Exception("AppUser not found")
-        val token = tokenService.findByUser(user) ?: throw Exception("Token Expired")
+        val token = tokenService.findByUser(user) ?: throw InvalidArgumentStateException("Invalid token")
         if (tokenService.validateToken(token, request)) {
             userDetails.update(userDetails.updatePassword(user, request.newPassword))
-            return "done."
+            return hashMapOf("message" to "done")
         }
-        return "Expired or Invalid Token"
+        throw InvalidArgumentStateException("Expired or Invalid Token")
     }
 
     /**

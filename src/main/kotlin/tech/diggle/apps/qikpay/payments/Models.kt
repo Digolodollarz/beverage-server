@@ -22,3 +22,6 @@ enum class PaymentMethod {
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 class InvalidArgumentStateException(override val message: String?) : RuntimeException(message)
+
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+class NullArgumentException(override val message: String?) : RuntimeException(message)

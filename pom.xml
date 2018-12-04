@@ -206,7 +206,7 @@
                         <goals>
                             <goal>install-file</goal>
                         </goals>
-                        <phase>clean</phase>
+                        <phase>process-sources</phase>
                     </execution>
                 </executions>
             </plugin>

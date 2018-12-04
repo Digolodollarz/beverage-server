@@ -24,11 +24,12 @@ class PasswordResetRestController(@Autowired val userDetails: UserDetailServiceI
      */
 
     @PostMapping("request")
-    fun getToken(@RequestBody request: PasswordResetRequest): Date {
+    fun getToken(@RequestBody request: PasswordResetRequest): Map<String, Date> {
         val appUser: AppUser = userDetails.findByUsernameOrEmail(request.username!!)
                 ?: throw IllegalArgumentException("Username not found. Please try again")
         val token = tokenService.createToken(appUser)
-        return token.expiryDate
+
+        return hashMapOf("expires" to token.expiryDate)
     }
 
     @PostMapping("update")

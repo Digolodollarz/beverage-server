@@ -2,12 +2,14 @@ package tech.diggle.apps.qikpay.security.passwordreset
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import tech.diggle.apps.qikpay.mail.EmailService
 import tech.diggle.apps.qikpay.security.user.AppUser
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 
 @Service
-class PasswordResetTokenServiceImpl(@Autowired val repository: PasswordTokenRepository)
+class PasswordResetTokenServiceImpl(@Autowired val repository: PasswordTokenRepository,
+                                    @Autowired val emailService: EmailService)
     : PasswordRestTokenService {
     override fun createToken(appUser: AppUser): PasswordResetToken {
         val pin = "${ThreadLocalRandom.current().nextInt(0, 10)}" +
@@ -16,13 +18,19 @@ class PasswordResetTokenServiceImpl(@Autowired val repository: PasswordTokenRepo
                 "${ThreadLocalRandom.current().nextInt(0, 10)}" +
                 "${ThreadLocalRandom.current().nextInt(0, 10)}" +
                 "${ThreadLocalRandom.current().nextInt(0, 10)}"
-        val token = repository.findByUser(appUser) ?: PasswordResetToken(appUser)
+        var token = repository.findByUser(appUser) ?: PasswordResetToken(appUser)
         token.updateToken(pin)
-        return repository.save(token)
+        token = repository.save(token)
+        val resetMessage = "Your password reset token is ${token.token}. \n" +
+                "It expires on ${token.expiryDate}"
+        emailService.sendSimpleMessage(
+                appUser.email!!, "Password reset token", resetMessage
+        )
+        return token
     }
 
     override fun validateToken(token: PasswordResetToken, request: PasswordResetRequest): Boolean {
-        if (request.token == null ) return false
+        if (request.token == null) return false
         val now = Calendar.getInstance()
         val sanitisedToken = request.token.trim()
                 .replace(" ", "")

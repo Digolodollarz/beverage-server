@@ -8,6 +8,30 @@ spring:
   jackson:
     serialization:
       INDENT_OUTPUT: true
+  mail:
+    host: mail.diggle.tech
+    port: 26
+    username: qikpaynoreply@diggle.tech
+    password: Hklfaokalk.^sfakli5o214
+#    smtp:
+#      auth: true
+#      socketfactory:
+#        port: 465
+#        class: javax.net.ssl.SSLSocketFactory
+
+#    properties.mail.transport.protocol: smtp
+#    properties.mail.smtp.port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+#          starttls:
+#            enable: true
+#            required: true
+          timeout: 30000
+
+        smtps:
+          timeout: 30000
 
 #  h2:
 #    console:

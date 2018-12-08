@@ -1,6 +1,7 @@
 package tech.diggle.apps.qikpay.security.user
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import tech.diggle.apps.qikpay.security.authority.Authority
 import java.util.Date
@@ -22,8 +23,10 @@ class AppUser {
     @Column(name = "USERNAME", length = 50, unique = true)
     @NotNull
     @Size(min = 4, max = 50)
-    public var username: String? = null
+    var username: String? = null
 
+    @JsonIgnore
+    @JsonIgnoreProperties
     @Column(name = "PASSWORD", length = 100)
     @NotNull
     @Size(min = 4, max = 100)
@@ -44,6 +47,7 @@ class AppUser {
     @Size(min = 4, max = 50)
     var email: String? = null
 
+    @JsonIgnoreProperties
     @Column(name = "ENABLED")
     @NotNull
     var enabled: Boolean? = null

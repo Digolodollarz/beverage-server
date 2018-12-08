@@ -11,7 +11,7 @@ import java.util.Date
  * Created by stephan on 20.03.16.
  */
 class JwtUser(
-        @get:JsonIgnore
+//        @get:JsonIgnore
         val id: Long?,
         private val username: String,
         val firstname: String,

@@ -38,7 +38,7 @@ class PaymentServiceImpl(val repository: PaymentRepository,
             val user = userRepository.findByUsername(username)
                     ?: throw IllegalArgumentException("Not Logged In, user not found")
             val payment = paynow.createPayment(request.reference,
-                    request.email ?: user.email)
+                    request.email?.toLowerCase() ?: user.email?.toLowerCase())
             request.items?.forEach { payment.add(it.key, it.value) }
             val paymentResponse = paynow.sendMobile(payment, request.phone,
                     PaymentMethod.ECOCASH.name)
@@ -100,7 +100,7 @@ class PaymentServiceImpl(val repository: PaymentRepository,
         } else if (status.data["status"] == PaymentStatus.Created.name ||
                 status.data["status"] == PaymentStatus.Sent.name)
             PaymentStatus.PENDING
-        else if(status.data["status"] == "Awaiting Delivery"){
+        else if (status.data["status"] == "Awaiting Delivery") {
             if (status.amount.toDouble() != payment.amount) throw IllegalArgumentException("Fraudulent activity detected")
             payment.datePaid = Date()
             payment.paid = true
@@ -108,7 +108,6 @@ class PaymentServiceImpl(val repository: PaymentRepository,
             repository.save(payment)
 
             PaymentStatus.PAID
-        }
-        else PaymentStatus.Cancelled
+        } else PaymentStatus.Cancelled
     }
 }

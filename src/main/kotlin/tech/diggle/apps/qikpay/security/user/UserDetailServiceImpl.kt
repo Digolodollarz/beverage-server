@@ -20,7 +20,6 @@ class UserDetailServiceImpl(val userRepository: UserRepository,
         appUser.enabled = true
         if (appUser.lastPasswordResetDate == null) appUser.lastPasswordResetDate = Date(1509494400)
         val roleUser = authorityRepository.findByName(AuthorityName.ROLE_USER)
-        val authorities = authorityRepository.findAll()
         appUser.authorities = listOf(roleUser)
         if (appUser.authorities == null || appUser.authorities!!.isEmpty()) throw IllegalArgumentException("Failed to set appUser. Retry")
         if (userRepository.findByUsername(appUser.username!!) != null) throw IllegalArgumentException("Username taken")

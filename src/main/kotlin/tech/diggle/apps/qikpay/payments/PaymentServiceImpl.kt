@@ -84,7 +84,8 @@ class PaymentServiceImpl(val repository: PaymentRepository,
      * If paid update payment status to paid and return
      */
     override fun confirmPayment(reference: String): PaymentStatus {
-        val payment = repository.findByReference(reference) ?: throw IllegalArgumentException("Payment request unknown")
+        val payment = repository.findByReference(reference)
+                ?: throw IllegalArgumentException("Unknown payment reference - $reference")
         if (payment.paid) return PaymentStatus.PAID
         val paynow = Paynow("6561", "c16b43fc-fd5e-4a3f-863c-8a8fba24ff2d")
         val status = paynow.pollTransaction(payment.pollUrl)

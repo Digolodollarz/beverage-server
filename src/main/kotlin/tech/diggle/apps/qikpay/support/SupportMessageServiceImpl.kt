@@ -41,7 +41,7 @@ class SupportMessageServiceImpl(@Autowired val messageRepository: SupportMessage
     override fun addSupportMessage(form: SupportMessageForm): SupportMessage {
         val auth: Authentication = SecurityContextHolder.getContext().authentication
         val username = auth.name
-        val user = userRepository.findByUsername(username)
+        val user: AppUser = userRepository.findByUsername(username)
                 ?: throw IllegalArgumentException("Not Logged In, user not found")
         val issue: SupportIssue = if (form.issue?.id != null) {
             issueRepository.findOne(form.issue?.id)

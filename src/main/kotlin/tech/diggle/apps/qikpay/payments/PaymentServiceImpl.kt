@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service
 import tech.diggle.apps.qikpay.security.user.UserRepository
 import webdev.payments.Paynow
 import java.util.*
+import kotlin.collections.HashMap
 
 @Service
 class PaymentServiceImpl(val repository: PaymentRepository,
@@ -83,7 +84,7 @@ class PaymentServiceImpl(val repository: PaymentRepository,
      * Poll the Paynow server, if payment pending return unpaid;
      * If paid update payment status to paid and return
      */
-    override fun confirmPayment(reference: String): PaymentStatus {
+    override fun confirmPayment(reference: String): Any {
         val payment = repository.findByReference(reference)
                 ?: throw IllegalArgumentException("Unknown payment reference - $reference")
         if (payment.paid) return PaymentStatus.PAID
@@ -97,18 +98,17 @@ class PaymentServiceImpl(val repository: PaymentRepository,
             payment.paid = true
             payment.updatedAt = Date()
             repository.save(payment)
-            PaymentStatus.PAID
+            mapOf("status" to PaymentStatus.PAID)
         } else if (status.data["status"] == PaymentStatus.Created.name ||
                 status.data["status"] == PaymentStatus.Sent.name)
-            PaymentStatus.PENDING
+            mapOf("status" to PaymentStatus.PENDING)
         else if (status.data["status"] == "Awaiting Delivery") {
             if (status.amount.toDouble() != payment.amount) throw IllegalArgumentException("Fraudulent activity detected")
             payment.datePaid = Date()
             payment.paid = true
             payment.updatedAt = Date()
             repository.save(payment)
-
-            PaymentStatus.PAID
-        } else PaymentStatus.Cancelled
+            mapOf("status" to PaymentStatus.PAID)
+        } else mapOf("status" to PaymentStatus.Cancelled)
     }
 }

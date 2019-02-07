@@ -2,6 +2,7 @@ package tech.diggle.apps.qikpay.support
 
 import org.omg.CosNaming.NamingContextPackage.NotFound
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.security.core.Authentication
@@ -17,9 +18,10 @@ class SupportMessageServiceImpl(@Autowired val messageRepository: SupportMessage
                                 @Autowired val issueRepository: SupportIssueRepository,
                                 @Autowired val userRepository: UserRepository) : SupportMessageService {
     override fun getSupportIssue(id: Long): SupportIssue? {
-        return this.issueRepository.findOne(id) ?: throw NotFound()
+        return this.issueRepository.findOne(id) ?: throw ChangeSetPersister.NotFoundException()
     }
 
+    //TODO: manage exceptions
     override fun getSupportIssue(ref: String): SupportIssue? {
         return this.issueRepository.findIssueByRef(ref)
     }

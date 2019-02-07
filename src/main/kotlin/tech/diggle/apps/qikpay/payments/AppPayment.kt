@@ -24,8 +24,10 @@ data class AppPayment(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long = 0
+    @JsonSerialize(converter = DateTo8601::class)
     var updatedAt: Date? = null
     var paid: Boolean = false
+    @JsonSerialize(converter = DateTo8601::class)
     var datePaid: Date? = null
 }
 

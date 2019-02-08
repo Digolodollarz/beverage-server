@@ -3,10 +3,7 @@ package tech.diggle.apps.qikpay.subscriptions
 import tech.diggle.apps.qikpay.payments.AppPayment
 import tech.diggle.apps.qikpay.security.user.AppUser
 import java.util.*
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.OneToOne
+import javax.persistence.*
 
 @Entity
 data class Subscription(
@@ -18,6 +15,7 @@ data class Subscription(
         var endDate: Date,
         @OneToOne
         var payment: AppPayment,
+        @ManyToOne
         val user: AppUser) {
 
     var active: Boolean = false

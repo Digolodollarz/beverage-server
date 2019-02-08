@@ -36,7 +36,7 @@ class SupportMessageRestController(@Autowired val service: SupportMessageService
     fun getIssueAdmin(@PathVariable id: Long) = service.getSupportIssue(id)
 
 
-    @GetMapping
+    @GetMapping("admin")
     fun getAllAdmin(
             @RequestParam("page") page: Optional<Int>,
             @RequestParam("size") size: Optional<Int>

@@ -12,6 +12,7 @@ import tech.diggle.apps.qikpay.payments.InvalidArgumentStateException
 import tech.diggle.apps.qikpay.payments.NullArgumentException
 import tech.diggle.apps.qikpay.security.user.AppUser
 import tech.diggle.apps.qikpay.security.user.UserRepository
+import java.util.Date
 import java.time.LocalDateTime
 
 @Service
@@ -36,7 +37,7 @@ class SupportMessageServiceImpl(@Autowired val messageRepository: SupportMessage
     }
 
     override fun createSupportIssue(issue: SupportIssueForm, user: AppUser): SupportIssue {
-        val newIssue = issueRepository.save(SupportIssue(0, LocalDateTime.now(), issue.subject!!, IssueStatus.Open, user))
+        val newIssue = issueRepository.save(SupportIssue(0, Date(), issue.subject!!, IssueStatus.Open, user))
         newIssue.ref = "IS${newIssue.id}R"
         return issueRepository.save(newIssue)
     }
@@ -53,7 +54,7 @@ class SupportMessageServiceImpl(@Autowired val messageRepository: SupportMessage
             this.createSupportIssue(form.issue!!, user)
         }
         val message = SupportMessage(
-                0, LocalDateTime.now(), form.message!!, user, issue
+                0, Date(), form.message!!, user, issue
         )
         return messageRepository.save(message)
     }
@@ -70,7 +71,7 @@ class SupportMessageServiceImpl(@Autowired val messageRepository: SupportMessage
         val issue: SupportIssue = issueRepository.findOne(form.issue?.id)
                 ?: throw InvalidArgumentStateException("Issue not found")
         val message = SupportMessage(id = 0,
-                dateSent = LocalDateTime.now(),
+                dateSent = Date(),
                 message = form.message!!,
                 issue = issue,
                 sender = user)

@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController
 class SubscriptionRestController(@Autowired val service: SubscriptionService){
     fun get() = service.getAll()
 
-    fun post(@RequestBody subscription: Subscription) = service.addNew(subscription)
+    fun post(@RequestBody subscription: SubscriptionForm) = service.addNew(subscription)
 }

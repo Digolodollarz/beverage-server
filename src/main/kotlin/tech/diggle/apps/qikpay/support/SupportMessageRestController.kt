@@ -26,4 +26,22 @@ class SupportMessageRestController(@Autowired val service: SupportMessageService
 
     @GetMapping("{id}")
     fun getIssue(@PathVariable id: Long) = service.getSupportIssue(id)
+
+    @PostMapping("admin")
+    fun replyMessage(@RequestBody messageForm: SupportMessageForm): SupportMessage {
+        return service.addSupportMessage(messageForm)
+    }
+
+    @GetMapping("admin/{id}")
+    fun getIssueAdmin(@PathVariable id: Long) = service.getSupportIssue(id)
+
+
+    @GetMapping
+    fun getAllAdmin(
+            @RequestParam("page") page: Optional<Int>,
+            @RequestParam("size") size: Optional<Int>
+    ): Page<SupportIssue> {
+        val pageRequest = PageRequest(page.orElse(0), size.orElse(20))
+        return service.getAllIssues(pageRequest)
+    }
 }

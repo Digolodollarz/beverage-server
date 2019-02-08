@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
+import tech.diggle.apps.qikpay.payments.InvalidArgumentStateException
 import tech.diggle.apps.qikpay.payments.NullArgumentException
 import tech.diggle.apps.qikpay.security.user.AppUser
 import tech.diggle.apps.qikpay.security.user.UserRepository
@@ -58,6 +59,25 @@ class SupportMessageServiceImpl(@Autowired val messageRepository: SupportMessage
     }
 
     override fun getIssues(page: PageRequest): Page<SupportIssue> {
+        return issueRepository.findAll(page)
+    }
+
+    override fun replySupportMessage(form: SupportMessageForm): SupportMessage {
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val username = auth.name
+        val user: AppUser = userRepository.findByUsername(username)
+                ?: throw IllegalArgumentException("Not Logged In, user not found")
+        val issue: SupportIssue = issueRepository.findOne(form.issue?.id)
+                ?: throw InvalidArgumentStateException("Issue not found")
+        val message = SupportMessage(id = 0,
+                dateSent = LocalDateTime.now(),
+                message = form.message!!,
+                issue = issue,
+                sender = user)
+        return messageRepository.save(message)
+    }
+
+    override fun getAllIssues(page: PageRequest): Page<SupportIssue> {
         return issueRepository.findAll(page)
     }
 }

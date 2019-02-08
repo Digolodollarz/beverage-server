@@ -11,5 +11,7 @@ interface SupportMessageService {
     fun createSupportIssue(issue: SupportIssue): SupportIssue
     fun createSupportIssue(issue: SupportIssueForm, user: AppUser): SupportIssue
     fun addSupportMessage(form: SupportMessageForm): SupportMessage
+    fun replySupportMessage(form: SupportMessageForm): SupportMessage
     fun getIssues(page: PageRequest): Page<SupportIssue>
+    fun getAllIssues(page: PageRequest): Page<SupportIssue>
 }

@@ -70,6 +70,9 @@ class SupportMessageServiceImpl(@Autowired val messageRepository: SupportMessage
                 ?: throw IllegalArgumentException("Not Logged In, user not found")
         val issue: SupportIssue = issueRepository.findOne(form.issue?.id)
                 ?: throw InvalidArgumentStateException("Issue not found")
+        if (form.message == null) {
+            throw NullArgumentException("Message cannot be blank")
+        }
         val message = SupportMessage(id = 0,
                 dateSent = Date(),
                 message = form.message!!,

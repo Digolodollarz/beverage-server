@@ -1,5 +1,7 @@
 package tech.diggle.apps.qikpay.subscriptions
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import tech.diggle.apps.qikpay.DateTo8601
 import tech.diggle.apps.qikpay.payments.AppPayment
 import tech.diggle.apps.qikpay.security.user.AppUser
 import java.util.*
@@ -11,7 +13,9 @@ data class Subscription(
         @GeneratedValue
         val id: Long,
         var title: String,
+        @JsonSerialize(converter = DateTo8601::class)
         var startDate: Date,
+        @JsonSerialize(converter = DateTo8601::class)
         var endDate: Date,
         @OneToOne
         var payment: AppPayment,

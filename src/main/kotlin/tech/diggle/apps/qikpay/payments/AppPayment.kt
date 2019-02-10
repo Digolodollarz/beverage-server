@@ -1,11 +1,8 @@
 package tech.diggle.apps.qikpay.payments
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.util.StdConverter
+import tech.diggle.apps.qikpay.DateTo8601
 import tech.diggle.apps.qikpay.security.user.AppUser
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.persistence.*
 
@@ -31,8 +28,3 @@ data class AppPayment(
     var datePaid: Date? = null
 }
 
-internal class DateTo8601 : StdConverter<Date, String>() {
-    override fun convert(date: Date): String {
-        return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()).format(DateTimeFormatter.ISO_DATE_TIME)
-    }
-}

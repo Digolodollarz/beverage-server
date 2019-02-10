@@ -1,5 +1,7 @@
 package tech.diggle.apps.qikpay.payments
 
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
@@ -12,7 +14,11 @@ import kotlin.collections.HashMap
 class PaymentServiceImpl(val repository: PaymentRepository,
                          val userRepository: UserRepository) : PaymentService {
     override fun getAll(): List<AppPayment> {
-        return repository.findAll()
+        val auth: Authentication = SecurityContextHolder.getContext().authentication
+        val username = auth.name
+        val user = userRepository.findByUsername(username)
+                ?: throw IllegalArgumentException("Not Logged In, user not found")
+        return repository.findByUserId(user.id)
     }
 
     override fun checkPayment(reference: String): PaymentStatus {
@@ -20,7 +26,7 @@ class PaymentServiceImpl(val repository: PaymentRepository,
     }
 
     override fun getPayment(id: Long): AppPayment? {
-        return repository.getOne(id)
+        return repository.findOne(id)
     }
 
     override fun addPayment(request: PaymentRequest): AppPayment {
@@ -110,5 +116,9 @@ class PaymentServiceImpl(val repository: PaymentRepository,
             repository.save(payment)
             mapOf("status" to PaymentStatus.PAID)
         } else mapOf("status" to PaymentStatus.Cancelled)
+    }
+
+    override fun getAllAdmin(page: PageRequest): Page<AppPayment> {
+        return repository.findAll(page)
     }
 }

@@ -1,9 +1,13 @@
 package tech.diggle.apps.qikpay.payments
 
-interface PaymentService{
-    fun getPayment(id:Long): AppPayment?
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+
+interface PaymentService {
+    fun getPayment(id: Long): AppPayment?
     fun addPayment(request: PaymentRequest): AppPayment
     fun checkPayment(reference: String): PaymentStatus
     fun confirmPayment(reference: String): Any
-    @Deprecated("Just don't use this in production") fun getAll(): List<AppPayment>
+    fun getAll(): List<AppPayment>
+    fun getAllAdmin(page: PageRequest): Page<AppPayment>
 }

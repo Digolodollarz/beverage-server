@@ -1,7 +1,9 @@
 package tech.diggle.apps.qikpay.payments
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 @RequestMapping("payments")
@@ -21,4 +23,8 @@ class PaymentRestController(@Autowired val service: PaymentService) {
 
     @PostMapping("confirm")
     fun confirmPayment(@RequestBody reference: String) = service.confirmPayment(reference)
+
+    @GetMapping("admin")
+    fun adminGet(@RequestParam page: Optional<Int>,
+                 @RequestParam size: Optional<Int>) = service.getAllAdmin(PageRequest(page.orElse(0), size.orElse(50)))
 }

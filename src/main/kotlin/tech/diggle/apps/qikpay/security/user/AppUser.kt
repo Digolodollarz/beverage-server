@@ -4,11 +4,10 @@ package tech.diggle.apps.qikpay.security.user
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.annotation.PropertyAccessor
+import com.fasterxml.jackson.annotation.JsonProperty.Access
 import tech.diggle.apps.qikpay.security.authority.Authority
-import java.util.Date
+import java.util.*
 import javax.persistence.*
-
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -27,7 +26,7 @@ class AppUser {
     @Size(min = 4, max = 50)
     var username: String? = null
 
-//    @JsonProperty(access = Access.WRITE_ONLY)
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Column(name = "PASSWORD", length = 100)
     @NotNull
     @Size(min = 4, max = 100)
@@ -53,6 +52,7 @@ class AppUser {
     @NotNull
     var enabled: Boolean? = null
 
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Column(name = "LASTPASSWORDRESETDATE")
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull

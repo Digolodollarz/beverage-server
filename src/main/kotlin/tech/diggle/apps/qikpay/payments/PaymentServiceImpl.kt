@@ -89,6 +89,8 @@ class PaymentServiceImpl(val repository: PaymentRepository,
      * Check the payment status, if paid return;
      * Poll the Paynow server, if payment pending return unpaid;
      * If paid update payment status to paid and return
+     *
+     * TODO: Manage Fraudulent Activity Detection better.
      */
     override fun confirmPayment(reference: String): Map<String, PaymentStatus> {
         val payment = repository.findByReference(reference)

@@ -73,7 +73,8 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         "/favicon.ico",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js"
+                        "/**/*.js",
+                        "/beverage/**"
                 ).permitAll()
 
                 // Un-secure H2 Database

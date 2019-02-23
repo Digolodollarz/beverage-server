@@ -10,5 +10,8 @@ class BeverageRestController(@Autowired val service: BeverageService) {
     fun get() = service.getFirstIn()
 
     @PostMapping
-    fun poured(@RequestBody beverage: Beverage) = service.markDone(beverage)
+    fun add(@RequestBody beverage: Beverage) = service.add(beverage)
+
+    @PostMapping("{id}")
+    fun poured(@PathVariable id: Long) = service.markDone(id)
 }

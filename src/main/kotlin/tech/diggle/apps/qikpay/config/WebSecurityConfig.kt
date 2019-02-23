@@ -73,9 +73,11 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                         "/favicon.ico",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js",
-                        "/beverage/**"
+                        "/**/*.js"
                 ).permitAll()
+
+                // Unsecure beverages
+                .antMatchers("/beverage/**").permitAll()
 
                 // Un-secure H2 Database
                 .antMatchers("/h2-console/**/**").permitAll()

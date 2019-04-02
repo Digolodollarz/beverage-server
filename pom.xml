@@ -26,14 +26,14 @@
         <jjwt.version>0.7.0</jjwt.version>
     </properties>
 
-    <repositories>
-        <!--other repositories if any-->
-        <repository>
-            <id>project.local</id>
-            <name>project</name>
-            <url>file:${project.basedir}/repo</url>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+        <!--&lt;!&ndash;other repositories if any&ndash;&gt;-->
+        <!--<repository>-->
+            <!--<id>project.local</id>-->
+            <!--<name>project</name>-->
+            <!--<url>file:${project.basedir}/repo</url>-->
+        <!--</repository>-->
+    <!--</repositories>-->
 
 
     <dependencies>
@@ -126,10 +126,15 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>zw.paynow</groupId>-->
+            <!--<artifactId>java-sdk</artifactId>-->
+            <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>zw.paynow</groupId>
             <artifactId>java-sdk</artifactId>
-            <version>1.0.0</version>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 

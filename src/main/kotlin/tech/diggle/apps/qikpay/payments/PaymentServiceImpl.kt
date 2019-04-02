@@ -34,8 +34,8 @@ class PaymentServiceImpl(val repository: PaymentRepository,
         if (request.reference.isNullOrEmpty()) print("TODO: Here something what can")
         if (repository.findByReference(request.reference!!) != null)
             throw IllegalStateException("Duplicate transaction")
-        val paynow = Paynow("6561",
-                "c16b43fc-fd5e-4a3f-863c-8a8fba24ff2d")
+        val paynow = Paynow("7271",
+                "461544fc-fe32-4e6a-be11-80621db0981a")
         if (request.method == PaymentMethod.ECOCASH) {
             if (request.phone.isNullOrEmpty())
                 throw IllegalArgumentException("Please provide phone")

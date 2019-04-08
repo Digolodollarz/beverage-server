@@ -6,7 +6,9 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 import tech.diggle.apps.qikpay.security.user.UserRepository
-import webdev.payments.Paynow
+import zw.co.paynow.constants.MobileMoneyMethod
+import zw.co.paynow.core.*
+import zw.co.paynow.core.Paynow
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -48,13 +50,13 @@ class PaymentServiceImpl(val repository: PaymentRepository,
                     request.email?.toLowerCase() ?: user.email?.toLowerCase())
             request.items?.forEach { payment.add(it.key, it.value) }
             val paymentResponse = paynow.sendMobile(payment, request.phone,
-                    PaymentMethod.ECOCASH.name)
+                    MobileMoneyMethod.ECOCASH)
             return if (paymentResponse.success()) {
                 val appPayment = AppPayment(
                         createdAt = Date(),
-                        link = paymentResponse.redirectLink(),
+                        link = paymentResponse.paynowReference,
                         pollUrl = paymentResponse.pollUrl(),
-                        reference = payment.reference,
+                        reference = request.reference!!,
                         instructions = paymentResponse.instructions,
                         user = user,
                         amount = payment.total.toDouble())
@@ -71,9 +73,9 @@ class PaymentServiceImpl(val repository: PaymentRepository,
                         ?: throw IllegalArgumentException("Not Logged In, user not found")
                 val appPayment = AppPayment(
                         createdAt = Date(),
-                        link = paymentResponse.redirectLink(),
+                        link = paymentResponse.redirectURL,
                         pollUrl = paymentResponse.pollUrl(),
-                        reference = payment.reference,
+                        reference = payment.merchantReference,
                         user = user,
                         amount = payment.total.toDouble())
                 repository.save(appPayment)
@@ -98,7 +100,7 @@ class PaymentServiceImpl(val repository: PaymentRepository,
         if (payment.paid) return mapOf("status" to PaymentStatus.PAID)
         val paynow = Paynow("6561", "c16b43fc-fd5e-4a3f-863c-8a8fba24ff2d")
         val status = paynow.pollTransaction(payment.pollUrl)
-        val stat = paynow.processStatusUpdate(status.data as HashMap<String, String>)
+//        val stat = paynow.processStatusUpdate(status.data as HashMap<String, String>)
 
         return if (status.paid()) {
             if (status.amount.toDouble() != payment.amount) throw IllegalArgumentException("Fraudulent activity detected")
@@ -107,17 +109,17 @@ class PaymentServiceImpl(val repository: PaymentRepository,
             payment.updatedAt = Date()
             repository.save(payment)
             mapOf("status" to PaymentStatus.PAID)
-        } else if (status.data["status"] == PaymentStatus.Created.name ||
-                status.data["status"] == PaymentStatus.Sent.name)
-            mapOf("status" to PaymentStatus.PENDING)
-        else if (status.data["status"] == "Awaiting Delivery") {
-            if (status.amount.toDouble() != payment.amount) throw IllegalArgumentException("Fraudulent activity detected")
-            payment.datePaid = Date()
-            payment.paid = true
-            payment.updatedAt = Date()
-            repository.save(payment)
-            mapOf("status" to PaymentStatus.PAID)
-        } else mapOf("status" to PaymentStatus.Cancelled)
+//        } else if (status.["status"] == PaymentStatus.Created.name ||
+//                status.data["status"] == PaymentStatus.Sent.name)
+//            mapOf("status" to PaymentStatus.PENDING)
+//        else if (status.data["status"] == "Awaiting Delivery") {
+//            if (status.amount.toDouble() != payment.amount) throw IllegalArgumentException("Fraudulent activity detected")
+//            payment.datePaid = Date()
+//            payment.paid = true
+//            payment.updatedAt = Date()
+//            repository.save(payment)
+//            mapOf("status" to PaymentStatus.PAID)
+        } else mapOf("status" to PaymentStatus.PENDING)
     }
 
     override fun getAllAdmin(page: PageRequest): Page<AppPayment> {

@@ -14,4 +14,10 @@ class BeverageRestController(@Autowired val service: BeverageService) {
 
     @PostMapping("{id}")
     fun poured(@PathVariable id: Long) = service.markDone(id)
+
+    @PostMapping("dispense")
+    fun restore(@RequestBody beverage: UnpouredBeverage) = service.restore(beverage)
+
+    @PostMapping("save")
+    fun save(@RequestBody beverage: UnpouredBeverage) = service.store(beverage)
 }

@@ -103,7 +103,7 @@ class PaymentServiceImpl(val repository: PaymentRepository,
 //        val stat = paynow.processStatusUpdate(status.data as HashMap<String, String>)
 
         return if (status.paid()) {
-            if (status.amount.toDouble() != payment.amount) throw IllegalArgumentException("Fraudulent activity detected")
+//            if (status.amount.toDouble() != payment.amount) throw IllegalArgumentException("Fraudulent activity detected")
             payment.datePaid = Date()
             payment.paid = true
             payment.updatedAt = Date()

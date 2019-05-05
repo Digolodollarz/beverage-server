@@ -85,7 +85,7 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
                 .antMatchers("/swagger-ui/**", "/v2/**", "/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
 //                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
 
         // Custom JWT based security filter
         httpSecurity

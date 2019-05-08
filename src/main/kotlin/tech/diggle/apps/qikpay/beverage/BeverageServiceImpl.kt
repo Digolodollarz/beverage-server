@@ -13,10 +13,12 @@ class BeverageServiceImpl(@Autowired val repository: BeverageRepository,
     }
 
     override fun restore(beverage: UnpouredBeverage): Beverage? {
-        val newBeverage = unpouredBeverageRepository.findByPin(beverage.pin) ?: throw BadHttpRequest()
+        val newBeverage = unpouredBeverageRepository.findByPin(beverage.pin)
+                ?: throw InvalidArgumentStateException("Unknown PIN")
         val bev = Beverage()
         bev.poured = false
         bev.amount = newBeverage.amount
+        unpouredBeverageRepository.delete(newBeverage)
         return repository.save(bev)
 
     }
